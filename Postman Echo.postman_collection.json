@@ -1,0 +1,1134 @@
+{
+	"info": {
+		"_postman_id": "8566f418-a0f4-4a41-adc8-3f040bbad04a",
+		"name": "Postman Echo",
+		"description": "# [Software Testing de aplicaciones. Postman. Testing de API](https://www.udemy.com/course/software-testing-postman/)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18853055"
+	},
+	"item": [
+		{
+			"name": "Request methods",
+			"item": [
+				{
+					"name": "GET Request with parameters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Test that checks the correct call', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"deflate\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlTest}}/get?phoneNumber={{$randomPhoneNumber}}&uuid={{$randomUUID}}",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"get"
+							],
+							"query": [
+								{
+									"key": "phoneNumber",
+									"value": "{{$randomPhoneNumber}}"
+								},
+								{
+									"key": "uuid",
+									"value": "{{$randomUUID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Request without parameters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlTest}}/get",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"get"
+							],
+							"query": [
+								{
+									"key": "pamatererOne",
+									"value": "param1",
+									"disabled": true
+								},
+								{
+									"key": "parameterTwo",
+									"value": "param2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "User",
+								"value": "fatencio",
+								"type": "text"
+							},
+							{
+								"key": "Test",
+								"value": "YES",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{urlTest}}/get?id=1",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"get"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST with form",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "{{$randomFullName}}",
+									"type": "text"
+								},
+								{
+									"key": "job",
+									"value": "{{$randomJobArea}}",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "{{$randomEmail}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{urlTest}}/post",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST with json",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Test that checks JSON data results\", function () {\r",
+									"    pm.expect(jsonData.url).to.eql('https://postman-echo.com/post');\r",
+									"    pm.expect(jsonData.data.name).to.eql('Frank Atencio Loreth');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check field type\", function () {\r",
+									"\r",
+									"    pm.expect(jsonData.data.name).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data.age).to.not.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data.age).to.be.a(\"number\");\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    pm.expect(jsonData.args).to.be.empty;\r",
+									"    pm.expect(jsonData).to.not.be.empty;\r",
+									"    pm.expect(jsonData.data).to.have.property('name').and.to.not.be.empty;\r",
+									"    pm.expect(jsonData.data).to.have.property('job').and.to.not.be.empty;\r",
+									"    pm.expect(jsonData.data.name).to.include('Frank');\r",
+									"    pm.expect(jsonData.data.status).to.be.true;\r",
+									"    pm.expect(Object.keys(jsonData.data)).to.include.members(['name', 'job']);\r",
+									"    pm.expect(jsonData.data.name).to.have.lengthOf(20);\r",
+									"    pm.expect(jsonData.data.name).to.have.lengthOf.greaterThan(10);\r",
+									"    pm.expect(jsonData.data.name).to.have.lengthOf.lessThan(21);\r",
+									"    pm.expect(jsonData.data.name).to.have.lengthOf.within(10, 20);\r",
+									"    pm.expect(jsonData.data.name).to.match(/^Frank/);\r",
+									"    pm.expect(jsonData.data.name).to.not.match(/Papus/);\r",
+									"    pm.expect(jsonData.data.age).to.be.closeTo(20, 30);\r",
+									"\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Set global and local variables\", () => {\r",
+									"    pm.environment.set('environment', jsonData.data.name);\r",
+									"    pm.globals.set('global', jsonData.data.uuid);\r",
+									"    \r",
+									"    const environment = pm.environment.get('environment');\r",
+									"    const global = pm.globals.get('global');\r",
+									"    const randomAge = pm.globals.get('randomAge');\r",
+									"\r",
+									"    console.log(\r",
+									"        `environment: ${environment}\\nglobal: ${global}\\nrandom age: ${randomAge}`\r",
+									"    );\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check random age from pre request\", () => {\r",
+									"    pm.expect(jsonData.data.age).to.eql(pm.globals.get('randomAge'));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"//Random data to insert in tab body\r",
+									"const age = Math.floor((Math.random()*100+1));\r",
+									"pm.globals.set('randomAge', age);\r",
+									"\r",
+									"//create a new request\r",
+									"pm.sendRequest('https://postman-echo.com/ip', (err, response) => {\r",
+									"    console.log(response.json());\r",
+									"    pm.globals.set('ip', response.json().ip);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlzcyI6InBsYXR6aS1waXp6YSIsImV4cCI6MTcxOTcwOTMwNCwiaWF0IjoxNzE4NDEzMzA0fQ.G5UWyDiE8JK6RF8kKRpTS-9CCbcVhRmtF1LIhCPf2G8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Frank Atencio Loreth\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"job\": \"{{$randomJobTitle}}\",\r\n    \"age\": {{randomAge}}, //global\r\n    \"status\": true,\r\n    \"uuid\": \"{{$randomUUID}}\",\r\n    \"createdAt\": \"{{$randomDateRecent}}\",\r\n    \"updatedAt\": \"{{$randomDateRecent}}\",\r\n    \"ip\": \"{{ip}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlTest}}/post",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST with raw",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "This is a test text"
+						},
+						"url": {
+							"raw": "{{urlTest}}/post",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST with array",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"customer\": 1102882124,\r\n    \"invoice\": \"ABC123FED\",\r\n    \"products\": [\r\n        {\r\n            \"id\": 789,\r\n            \"qty\": 2\r\n        },\r\n        {\r\n            \"id\": 123,\r\n            \"qty\": 5\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlTest}}/post",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"customer\": 1102882124,\r\n    \"invoice\": \"ABC123FED\",\r\n    \"products\": [\r\n        {\r\n            \"id\": 789,\r\n            \"qty\": 2\r\n        },\r\n        {\r\n            \"id\": 123,\r\n            \"qty\": 5\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlTest}}/put",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"put"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"customer\": 1102882124\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlTest}}/delete",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Basic Auth",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "postman",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlTest}}/basic-auth",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"basic-auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Auth using Bearer token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlzcyI6InBsYXR6aS1waXp6YSIsImV4cCI6MTcxOTcwOTMwNCwiaWF0IjoxNzE4NDEzMzA0fQ.G5UWyDiE8JK6RF8kKRpTS-9CCbcVhRmtF1LIhCPf2G8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlBin}}/bearer",
+							"host": [
+								"{{urlBin}}"
+							],
+							"path": [
+								"bearer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OAuth-v1",
+					"request": {
+						"auth": {
+							"type": "oauth1",
+							"oauth1": [
+								{
+									"key": "consumerSecret",
+									"value": "D+EdQ-gs$-%@2Nu7",
+									"type": "string"
+								},
+								{
+									"key": "consumerKey",
+									"value": "RKCGzna7bv9YD57c",
+									"type": "string"
+								},
+								{
+									"key": "signatureMethod",
+									"value": "HMAC-SHA1",
+									"type": "string"
+								},
+								{
+									"key": "version",
+									"value": "1.0",
+									"type": "string"
+								},
+								{
+									"key": "addParamsToHeader",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "addEmptyParamsToSign",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlTest}}/oauth1",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"oauth1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Utils",
+			"item": [
+				{
+					"name": "Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Have OK status string\", () => {\r",
+									"    pm.expect(pm.response.status).to.be.oneOf([\"OK\", \"Internal Server Error\"]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Successful POST request\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([201, 202, 401, 404, 500]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.expect(pm.response.status).to.include(\"Server\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlTest}}/status/500",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"status",
+								"500"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Stream",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlTest}}/stream/5",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"stream",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delay",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains an specific string\", function () {\r",
+									"    pm.response.to.have.body(jsonData);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.response.to.have.header(\"Server\");\r",
+									"    pm.response.to.have.header(\"Date\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Have OK status string\", () => {\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlTest}}/delay/2",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"delay",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PathVariables",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlTest}}/status/:id",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"status",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "200"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Date and hour",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlTest}}/time/valid?timestamp=2024-10-09",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"time",
+								"valid"
+							],
+							"query": [
+								{
+									"key": "timestamp",
+									"value": "2024-10-09"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Day of week",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlTest}}/time/unit?timestamp=2024-10-10&unit=day",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"time",
+								"unit"
+							],
+							"query": [
+								{
+									"key": "timestamp",
+									"value": "2024-10-10"
+								},
+								{
+									"key": "unit",
+									"value": "day"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cookies",
+			"item": [
+				{
+					"name": "GET cookies",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlTest}}/cookies",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"cookies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD cookies",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlTest}}/cookies/set?param1=Hola&param2=Mundo",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"cookies",
+								"set"
+							],
+							"query": [
+								{
+									"key": "param1",
+									"value": "Hola"
+								},
+								{
+									"key": "param2",
+									"value": "Mundo"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Test XML/TEXT",
+			"item": [
+				{
+					"name": "Test XML",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonObject = xml2Json(responseBody);\r",
+									"console.log(jsonObject);\r",
+									"\r",
+									"pm.test(\"Check field title\", () => {\r",
+									"    pm.expect(jsonObject.slideshow.$.title).to.eql(\"Sample Slide Show\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlBin}}/xml",
+							"host": [
+								"{{urlBin}}"
+							],
+							"path": [
+								"xml"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test TEXT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.text();\r",
+									"\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(jsonData).to.include(\"Disallow\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlBin}}/robots.txt",
+							"host": [
+								"{{urlBin}}"
+							],
+							"path": [
+								"robots.txt"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tests",
+			"item": [
+				{
+					"name": "scripts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Test that checks JSON data results\", function () {\r",
+									"    pm.expect(jsonData.url).to.eql('https://postman-echo.com/post');\r",
+									"    pm.expect(jsonData.data.name).to.eql('Frank Atencio Loreth');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check field type\", function () {\r",
+									"\r",
+									"    pm.expect(jsonData.data.name).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data.age).to.not.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data.age).to.be.a(\"number\");\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    pm.expect(jsonData.args).to.be.empty;\r",
+									"    pm.expect(jsonData).to.not.be.empty;\r",
+									"    pm.expect(jsonData.data).to.have.property('name').and.to.not.be.empty;\r",
+									"    pm.expect(jsonData.data).to.have.property('job').and.to.not.be.empty;\r",
+									"    pm.expect(jsonData.data.name).to.include('Frank');\r",
+									"    pm.expect(jsonData.data.status).to.be.true;\r",
+									"    pm.expect(Object.keys(jsonData.data)).to.include.members(['name', 'job']);\r",
+									"    pm.expect(jsonData.data.name).to.have.lengthOf(20);\r",
+									"    pm.expect(jsonData.data.name).to.have.lengthOf.greaterThan(10);\r",
+									"    pm.expect(jsonData.data.name).to.have.lengthOf.lessThan(21);\r",
+									"    pm.expect(jsonData.data.name).to.have.lengthOf.within(10, 20);\r",
+									"    pm.expect(jsonData.data.name).to.match(/^Frank/);\r",
+									"    pm.expect(jsonData.data.name).to.not.match(/Papus/);\r",
+									"    pm.expect(jsonData.data.age).to.be.closeTo(20, 30);\r",
+									"\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Set global and local variables\", () => {\r",
+									"    pm.environment.set('environment', jsonData.data.name);\r",
+									"    pm.globals.set('global', jsonData.data.uuid);\r",
+									"    \r",
+									"    const environment = pm.environment.get('environment');\r",
+									"    const global = pm.globals.get('global');\r",
+									"    const randomAge = pm.globals.get('randomAge');\r",
+									"\r",
+									"    console.log(\r",
+									"        `environment: ${environment}\\nglobal: ${global}\\nrandom age: ${randomAge}`\r",
+									"    );\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check random age from pre request\", () => {\r",
+									"    pm.expect(jsonData.data.age).to.eql(pm.globals.get('randomAge'));\r",
+									"});\r",
+									"\r",
+									"// Reuse tests\r",
+									"const reuseTest = pm.environment.get('reuseTest');\r",
+									"eval(reuseTest)();"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"//Random data to insert in tab body\r",
+									"const age = Math.floor((Math.random()*100+1));\r",
+									"pm.globals.set('randomAge', age);\r",
+									"\r",
+									"//create a new request\r",
+									"pm.sendRequest('https://postman-echo.com/ip', (err, response) => {\r",
+									"    console.log(response.json());\r",
+									"    pm.globals.set('ip', response.json().ip);\r",
+									"});\r",
+									"\r",
+									"//Reuse tests\r",
+									"var resuseTests = () => {\r",
+									"    pm.test(\"Status code is 200\", () => {\r",
+									"        pm.response.to.have.status(200);\r",
+									"    });\r",
+									"\r",
+									"    pm.test(\"Time is below 300\", () => {\r",
+									"        pm.expect(pm.response.responseTime).to.be.below(300);\r",
+									"    });\r",
+									"};\r",
+									"\r",
+									"pm.environment.set('reuseTest', resuseTests.toString());\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlzcyI6InBsYXR6aS1waXp6YSIsImV4cCI6MTcxOTcwOTMwNCwiaWF0IjoxNzE4NDEzMzA0fQ.G5UWyDiE8JK6RF8kKRpTS-9CCbcVhRmtF1LIhCPf2G8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Frank Atencio Loreth\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"job\": \"{{$randomJobTitle}}\",\r\n    \"age\": {{randomAge}}, //global\r\n    \"status\": true,\r\n    \"uuid\": \"{{$randomUUID}}\",\r\n    \"createdAt\": \"{{$randomDateRecent}}\",\r\n    \"updatedAt\": \"{{$randomDateRecent}}\",\r\n    \"ip\": \"{{ip}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlTest}}/post",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Workflows",
+			"item": [
+				{
+					"name": "request_1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"postman.setNextRequest('request_3')"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlTest}}/get",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "request_2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlTest}}/get",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "request_3",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlTest}}/get",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"get"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Monitor",
+			"item": [
+				{
+					"name": "request_1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"postman.setNextRequest('request_3')"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlTest}}/get",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "request_2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlTest}}/get",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "request_3",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlTest}}/get",
+							"host": [
+								"{{urlTest}}"
+							],
+							"path": [
+								"get"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
